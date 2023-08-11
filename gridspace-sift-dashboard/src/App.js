@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchAllUsers } from './api/fetch-data';
+import { fetchAllUsers } from './services/fetch-data';
 import UserTable from './components/UserTable';
 import ControlButtons from './components/ControlButtons';
 
@@ -9,7 +9,6 @@ function App() {
     useEffect(() => {
         async function getUsers() {
             const fetchedUsers = await fetchAllUsers();
-            console.log("Fetched Users:", fetchedUsers); // <-- Add this line
             setUsers(fetchedUsers);
         }
 
