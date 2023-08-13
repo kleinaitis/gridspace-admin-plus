@@ -1,5 +1,6 @@
 import User from '../models/UserClass';
-const credentials = window.btoa("USERNAME:PASSWORD") // place login credentials here
+
+const credentials = window.btoa("USERNAME:PASSWORD"); // login credentials
 
 async function fetchUsersFromURL(url) {
     try {
@@ -7,8 +8,8 @@ async function fetchUsersFromURL(url) {
             method: 'GET',
             headers: {
                 'Authorization': 'Basic ' + credentials,
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         });
 
         if (!response.ok) {
@@ -22,23 +23,38 @@ async function fetchUsersFromURL(url) {
     }
 }
 
+export async function fetchOrgNodes() {
+    const url = '/v0/org/tiers/teams';
+    const options = {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Basic ' + credentials,
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        return data.results;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
 export async function fetchAllUsers() {
-        let url = '/v0/users';
-        let users = [];
+    let url = '/v0/users';
+    let users = [];
 
-        while (url) { // While there's a URL to fetch from
-            const data = await fetchUsersFromURL(url);
+    while (url) {
+        const data = await fetchUsersFromURL(url);
 
-            // Process and concatenate the fetched users
-            if (data && data.results) {
-                const mappedUsers = data.results.map(user => {
-                    // Create a User and format for listing
-                    const userInstance = new User(user);
-                    return userInstance.formatForListing();
-                });
-                users = users.concat(mappedUsers);
-            }
-        // Check for the next URL
+        if (data && data.results) {
+            const mappedUsers = data.results.map(user => new User(user));
+            users = users.concat(mappedUsers);
+        }
+
         if (data.next) {
             try {
                 url = new URL(data.next).pathname + new URL(data.next).search;
@@ -53,4 +69,3 @@ export async function fetchAllUsers() {
 
     return users;
 }
-
