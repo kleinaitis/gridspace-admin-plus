@@ -3,7 +3,7 @@ import './UpdateUser.css';
 import { updateUser } from '../services/send-data';
 import { fetchOrgNodes } from '../services/fetch-data';
 
-function UpdateUser({ isOpen, onClose, user, onUpdateSuccess, roles }) {
+function UpdateUser({ isOpen, onClose, user, onUpdateSuccess, roles, credentials }) {
     const [orgNodes, setOrgNodes] = useState([]);
     const [formData, setFormData] = useState({
         orgNode: user?.orgNode?.id || '',
@@ -16,12 +16,16 @@ function UpdateUser({ isOpen, onClose, user, onUpdateSuccess, roles }) {
     const [shouldCloseModal, setShouldCloseModal] = useState(false);
 
     useEffect(() => {
+        // Function to fetch org nodes
         const getOrgNodes = async () => {
-            const nodes = await fetchOrgNodes();
-            const mappedNodes = nodes.map(node => ({ id: node.id, name: node.name }));
-            setOrgNodes(mappedNodes);
+            try {
+                const nodes = await fetchOrgNodes(credentials);
+                const mappedNodes = nodes.map(node => ({ id: node.id, name: node.name }));
+                setOrgNodes(mappedNodes);
+            } catch (error) {
+                console.error("Error fetching org nodes:", error);
+            }
         };
-        getOrgNodes();
 
         if (user) {
             setFormData({
@@ -31,7 +35,8 @@ function UpdateUser({ isOpen, onClose, user, onUpdateSuccess, roles }) {
                 lastName: user.lastName || '',
             });
         }
-    }, [user]);
+        getOrgNodes();
+    }, [user, credentials]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

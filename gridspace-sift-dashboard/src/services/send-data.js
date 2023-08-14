@@ -1,6 +1,4 @@
-const credentials = window.btoa("USERNAME:PASSWORD"); // login credentials
-
-export async function updateUser(apiData) {
+export async function updateUser(apiData, credentials) {
     const url = `/v0/users/${apiData.userId}`;
 
     const body = {

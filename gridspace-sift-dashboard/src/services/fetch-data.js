@@ -1,8 +1,6 @@
 import User from '../models/UserClass';
 
-const credentials = window.btoa("USERNAME:PASSWORD"); // login credentials
-
-async function fetchUsersFromURL(url) {
+async function fetchUsersFromURL(url, credentials) {
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -23,32 +21,12 @@ async function fetchUsersFromURL(url) {
     }
 }
 
-export async function fetchOrgNodes() {
-    const url = '/v0/org/tiers/teams';
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Basic ' + credentials,
-            'Content-Type': 'application/json',
-        },
-    };
-
-    try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        return data.results;
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
-}
-
-export async function fetchAllUsers() {
+export async function fetchAllUsers(credentials) {
     let url = '/v0/users';
     let users = [];
 
     while (url) {
-        const data = await fetchUsersFromURL(url);
+        const data = await fetchUsersFromURL(url, credentials);
 
         if (data && data.results) {
             const mappedUsers = data.results.map(user => new User(user));
@@ -68,4 +46,24 @@ export async function fetchAllUsers() {
     }
 
     return users;
+}
+
+export async function fetchOrgNodes(credentials) {
+    const url = '/v0/org/tiers/teams';
+    const options = {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Basic ' + credentials,
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        return data.results;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 }
