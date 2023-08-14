@@ -1,0 +1,46 @@
+.login-container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 40px auto;
+    transition: all 0.3s ease-in-out;
+}
+
+input[type="text"], input[type="password"], button {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+input[type="text"], input[type="password"] {
+    border: 1px solid #e0e0e0;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #0079a6;
+    outline: none;
+}
+
+button {
+    background: #0079a6;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #005f7a;
+}
+
+.error-message {
+    color: #e74c3c;
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+}
