@@ -20,11 +20,12 @@
     max-width: 500px;
     width: 80%;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+
 }
 
 .close-button {
-    top: 15px;
-    right: 15px;
+    top: 10px;
+    right: 10px;
     border: none;
     background: none;
     cursor: pointer;
@@ -32,6 +33,7 @@
     color: #333;
     z-index: 2;
     transition: color 0.3s ease-in-out;
+    margin-bottom: 0;
 }
 
 .close-button:hover {
@@ -40,7 +42,6 @@
 
 label {
     display: block;
-    margin-bottom: 15px;
     font-weight: bold;
     color: #333;
 }
@@ -54,6 +55,7 @@ label > input[type="text"] {
     font-size: 14px;
     color: #333;
     background-color: #f9f9f9;
+    margin-bottom: 8px;
 }
 
 button[type="submit"] {
@@ -65,10 +67,13 @@ button[type="submit"] {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
+h2 {
+    text-align: center;
+    margin: 5px;
 }
 
 .success-message,
