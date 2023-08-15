@@ -43,10 +43,6 @@ export default class User {
         return this._externalId;
     }
 
-    get throttle() {
-        return this._throttle;
-    }
-
     get displayName() {
         return this._displayName;
     }
@@ -71,7 +67,6 @@ export default class User {
         this._lastName = data.last_name || null;
         this._agentId = data.agent_id || null;
         this._externalId = data.external_id || null;
-        this._throttle = data._throttle || null;
 
         // attributes from the list users response, not necessary for creation/update but might be useful
         this._displayName = data.display_name || null;

@@ -3,6 +3,7 @@ import { fetchAllUsers } from './services/fetch-data';
 import UserTable from './components/UserTable';
 import UpdateUser from './components/UpdateUser';
 import Login from './components/Login';
+import * as XLSX from 'xlsx';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -96,6 +97,52 @@ function App() {
         }
     };
 
+    const exportToExcel = () => {
+        if (credentials) {
+            try {
+                const workbook = XLSX.utils.book_new();
+                const sheetData = Object.values(users).map(user => [
+                    user.userId,
+                    user.firstName,
+                    user.lastName,
+                    user.email,
+                    user.team,
+                    user.role,
+                    user.orgNode ? user.orgNode.name : '',
+                    user.agentId,
+                    user.externalId,
+                    user.displayName,
+                    user.status,
+                    user.lastLogin,
+                ]);
+
+                const ws = XLSX.utils.aoa_to_sheet([
+                    [
+                        'User ID',
+                        'First Name',
+                        'Last Name',
+                        'Email',
+                        'Team',
+                        'Role',
+                        'Org Node',
+                        'Agent ID',
+                        'External ID',
+                        'Display Name',
+                        'Status',
+                        'Last Login',
+                    ],
+                    ...sheetData,
+                ]);
+                XLSX.utils.book_append_sheet(workbook, ws, 'Users');
+
+                // Save the file
+                XLSX.writeFile(workbook, 'user_data.xlsx');
+            } catch (error) {
+                console.error('Error exporting to Excel:', error);
+            }
+        }
+    };
+
     return (
         <div className="App">
             <div className="App-header">
@@ -104,8 +151,15 @@ function App() {
             <div className="table-container">
                 <UserTable users={Object.values(users)} onUserSelect={handleUserSelect} selectedUserId={selectedUser} />
                 <div className="action-buttons">
-                    <button className="button button-create" onClick={onCreateUser}>Create New User</button>
-                    <button className="button" onClick={onUpdateUser} disabled={!selectedUser}>Update Existing User</button>
+                    <button className="button button-create" onClick={onCreateUser}>
+                        <i className="fas fa-plus"></i> Add New User
+                    </button>
+                    <button className="button" onClick={onUpdateUser} disabled={!selectedUser}>
+                        <i className="fas fa-pencil-alt"></i> Update Existing User
+                    </button>
+                    <button className="button" onClick={exportToExcel}>
+                        <i className="fas fa-file-excel"></i> Export Users to Excel
+                    </button>
                 </div>
             </div>
             {isModalOpen && (
