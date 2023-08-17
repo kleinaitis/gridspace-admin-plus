@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import UserRow from './UserRow';
 import './UserTable.css';
 
-function UserTable({ users, onUserSelect, onCreateUser, onUpdateUser, exportToExcel }) {
+function UserTable({ users, onUserSelect, onCreateUser, onUpdateUser, exportToExcel, updateUserErrorMessage  }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage, setUsersPerPage] = useState(10);
     const [selectedUser, setSelectedUser] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [displayErrorMessage, setDisplayErrorMessage] = useState(false);
+    const tableRef = useRef(null);
+
+    useEffect(() => {
+        const handleDocumentClick = (event) => {
+            if (!tableRef.current.contains(event.target)) {
+                setSelectedUser(null); // Clear selected user if the click is outside the table
+                setDisplayErrorMessage(false); // Reset the error message when clicking outside the table
+            }
+        };
+
+        document.addEventListener('click', handleDocumentClick);
+
+        return () => {
+            document.removeEventListener('click', handleDocumentClick);
+        };
+    }, []);
 
     const filteredUsers = users.filter(user => {
         const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
@@ -22,8 +39,17 @@ function UserTable({ users, onUserSelect, onCreateUser, onUpdateUser, exportToEx
     const firstIndex = lastIndex - usersPerPage;
     const currentUsers = filteredUsers.slice(firstIndex, lastIndex);
 
+    const handleUpdateUser = () => {
+        if (!selectedUser) {
+            setDisplayErrorMessage(true); // Show error message when the button is clicked without a selected user
+            return;
+        }
+        onUpdateUser();
+    };
+
     const handleRowClick = (user) => {
         setSelectedUser(user);
+        setDisplayErrorMessage(false);
         onUserSelect(user.userId);
     };
 
@@ -42,6 +68,10 @@ function UserTable({ users, onUserSelect, onCreateUser, onUpdateUser, exportToEx
 
     return (
         <div className="user-table-container">
+            <div ref={tableRef} className="table-wrapper">
+            <div className="table-header">
+                <h2>User Management</h2>
+            </div>
             <div className="top-row-container">
                 <div className="search-bar-container">
                     <input
@@ -53,11 +83,15 @@ function UserTable({ users, onUserSelect, onCreateUser, onUpdateUser, exportToEx
                     />
                 </div>
                 <div className="button-container">
-                    <button className="icon-button button-create" onClick={onCreateUser}>
-                        <i className="fas fa-plus"></i>
+                    <button className="icon-button" onClick={onCreateUser}>
+                        <i className="fas fa-user-plus"></i>
                         <span className="button-text">Add New User</span>
                     </button>
-                    <button className="icon-button" onClick={onUpdateUser} disabled={!selectedUser}>
+                    <button
+                        className={`icon-button ${updateUserErrorMessage || displayErrorMessage ? 'error' : ''}`}
+                        onClick={handleUpdateUser}
+                        data-error-message="Please select a user before updating."
+                    >
                         <i className="fas fa-pencil-alt"></i>
                         <span className="button-text">Update User</span>
                     </button>
@@ -116,6 +150,7 @@ function UserTable({ users, onUserSelect, onCreateUser, onUpdateUser, exportToEx
                 ))}
                 </tbody>
             </table>
+        </div>
         </div>
     );
 }
