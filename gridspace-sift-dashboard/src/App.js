@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { fetchAllUsers } from './services/fetch-data';
+import {fetchAllUsers, fetchOrgNodes} from './services/fetch-data';
 import UserTable from './components/UserTable';
-import UpdateUser from './components/UpdateUser';
+import UserManagementForm from './components/UserManagementForm';
 import Login from './components/Login';
 import * as XLSX from 'xlsx';
 
@@ -13,6 +13,7 @@ function App() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [userToUpdate, setUserToUpdate] = useState(null);
     const [uniqueRoles, setUniqueRoles] = useState([]);
+    const [orgNodes, setOrgNodes] = useState([]);
 
     useEffect(() => {
         async function getUsersAndRoles() {
@@ -32,8 +33,22 @@ function App() {
                 }
             }
         }
-        getUsersAndRoles();
+
+        const getOrgNodes = async () => {
+            try {
+                const nodes = await fetchOrgNodes(credentials);
+                setOrgNodes(nodes);
+            } catch (error) {
+                console.error("Error fetching org nodes:", error);
+            }
+        };
+
+        if (credentials) {
+            getUsersAndRoles();
+            getOrgNodes();
+        }
     }, [credentials]);
+
 
     const handleLoginSuccess = (fetchedUsers, loginCredentials) => {
         setUsers(fetchedUsers);
@@ -46,7 +61,14 @@ function App() {
     }
 
     const onCreateUser = () => {
-        // Logic for creating a new user
+        const newUser = {
+            orgNode: '',
+            role: '',
+            firstName: '',
+            lastName: '',
+        };
+        setUserToUpdate(newUser);
+        setModalOpen(true);
     };
 
     const handleUserSelect = (userId) => {
@@ -76,7 +98,7 @@ function App() {
         }
     };
 
-    const handleUpdateSuccess = async (updatedUserData) => {
+    const handleUpdateSuccess = async (isCreating) => {
         if (credentials) {
             try {
                 const updatedUsers = await fetchAllUsers(credentials);
@@ -84,13 +106,15 @@ function App() {
                     acc[user.userId] = user;
                     return acc;
                 }, {});
+
                 setUsers(usersById);
 
-                // Reset selected user
-                setSelectedUser(null);
-
-                // Close the modal
-                setModalOpen(false);
+                if (isCreating) {
+                    setModalOpen(false); // Close the modal when creating a new user
+                } else {
+                    setSelectedUser(null);
+                    setModalOpen(false); // Close the modal when updating an existing user
+                }
             } catch (error) {
                 console.error("Failed to fetch updated user data:", error);
             }
@@ -149,28 +173,26 @@ function App() {
                 <h1>User Management</h1>
             </div>
             <div className="table-container">
-                <UserTable users={Object.values(users)} onUserSelect={handleUserSelect} selectedUserId={selectedUser} />
-                <div className="action-buttons">
-                    <button className="button button-create" onClick={onCreateUser}>
-                        <i className="fas fa-plus"></i> Add New User
-                    </button>
-                    <button className="button" onClick={onUpdateUser} disabled={!selectedUser}>
-                        <i className="fas fa-pencil-alt"></i> Update Existing User
-                    </button>
-                    <button className="button" onClick={exportToExcel}>
-                        <i className="fas fa-file-excel"></i> Export Users to Excel
-                    </button>
-                </div>
+                <UserTable
+                    users={Object.values(users)}
+                    onUserSelect={handleUserSelect}
+                    selectedUserId={selectedUser}
+                    onCreateUser={onCreateUser}
+                    onUpdateUser={onUpdateUser}
+                    exportToExcel={exportToExcel}
+                />
             </div>
             {isModalOpen && (
-                <UpdateUser
+                <UserManagementForm
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
                     user={userToUpdate}
                     onUpdateSuccess={handleUpdateSuccess}
                     roles={uniqueRoles}
                     onUserListRefresh={handleUserListRefresh}
+                    availableOrgNodes={orgNodes}
                     credentials={credentials}
+                    isCreatingUser={!selectedUser}
                 />
             )}
         </div>
