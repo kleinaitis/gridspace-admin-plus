@@ -23,11 +23,13 @@ function Login(props) {
     };
 
     return (
-        <div className="login-container">
-            <input type="text" placeholder="Account ID" onChange={e => setAccountId(e.target.value)} />
-            <input type="password" placeholder="Secret Key" onChange={e => setSecretKey(e.target.value)} />
-            <button onClick={handleLogin}>Login</button>
-            {error && <div className="error-message">{error}</div>}
+        <div className="login-page">
+            <div className="login-container">
+                <input type="text" placeholder="Account ID" onChange={e => setAccountId(e.target.value)} />
+                <input type="password" placeholder="Secret Key" onChange={e => setSecretKey(e.target.value)} />
+                <button onClick={handleLogin}>Login</button>
+                {error && <div className="error-message">{error}</div>}
+            </div>
         </div>
     );
 }

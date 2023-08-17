@@ -111,45 +111,116 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
         return null;
     }
 
+    const formFields = isCreatingUser
+        ? (
+            <>
+                <label>
+                    Org Node
+                    <select name="orgNode" value={formData.orgNode} onChange={handleChange} required>
+                        <option value="">Select Org Node</option>
+                        {availableOrgNodes.map(node => (
+                            <option key={node.id} value={node.id}>
+                                {node.name}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+                <label>
+                    Role
+                    <select name="role" value={formData.role} onChange={handleChange} required>
+                        <option value="">Select Role</option>
+                        {roles.map(role => (
+                            <option key={role} value={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</option>
+                        ))}
+                    </select>
+                </label>
+                <label>
+                    Name
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                </label>
+                <label>
+                    Email
+                    <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+                </label>
+            </>
+        )
+        : (
+            <>
+                <label>
+                    Org Node
+                    <select name="orgNode" value={formData.orgNode} onChange={handleChange} required>
+                        <option value="">Select Org Node</option>
+                        {availableOrgNodes.map(node => (
+                            <option key={node.id} value={node.id}>
+                                {node.name}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+                <label>
+                    Role
+                    <select name="role" value={formData.role} onChange={handleChange} required>
+                        <option value="">Select Role</option>
+                        {roles.map(role => (
+                            <option key={role} value={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</option>
+                        ))}
+                    </select>
+                </label>
+                <label>
+                    First Name
+                    <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
+                </label>
+                <label>
+                    Last Name
+                    <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
+                </label>
+            </>
+        );
+
     return (
         <div className="update-user-modal">
             <div className="modal-content">
                 {successMessage && <div className="success-message">{successMessage}</div>}
                 {errorMessage && <div className="error-message">{errorMessage}</div>}
                 {isUpdating && !shouldCloseModal && <div className="loading-indicator">Updating...</div>}
-                <h2>{isCreatingUser ? 'Create User' : 'Update User'}</h2>
+                <div className="modal-header">
+                    <h2>{isCreatingUser ? 'Create User' : 'Update User'}</h2>
+                </div>
                 <form onSubmit={handleUpdate}>
-                    <label>Org Node
+                    <div className="label-container">
+                        <label>Org Node</label>
                         <select name="orgNode" value={formData.orgNode} onChange={handleChange} required>
-                            <option value="">Select Org Node</option>
                             {availableOrgNodes.map(node => (
                                 <option key={node.id} value={node.id}>
                                     {node.name}
                                 </option>
                             ))}
                         </select>
-                    </label>
-                    <label>Role
+                    </div>
+                    <div className="label-container">
+                        <label>Role</label>
                         <select name="role" value={formData.role} onChange={handleChange} required>
-                            <option value="">Select Role</option>
                             {roles.map(role => (
                                 <option key={role} value={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</option>
                             ))}
                         </select>
-                    </label>
-                    {isCreatingUser ? (
-                        <div>
-                            <label>Full Name <input type="text" name="name" value={formData.name} onChange={handleChange} required /></label>
-                            <label>Email <input type="email" name="email" value={formData.email} onChange={handleChange} required /></label>
-                        </div>
-                    ) : (
-                        <div>
-                            <label>First Name <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required /></label>
-                            <label>Last Name <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required /></label>
-                        </div>
-                    )}
-                    <button type="submit" disabled={isUpdating}>{isCreatingUser ? 'Create User' : 'Save Changes'}</button>
-                    <button type="button" onClick={onClose} disabled={isUpdating}>Cancel</button>
+                    </div>
+                    <div className="label-container">
+                        <label>Name</label>
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                    </div>
+                    <div className="label-container">
+                        <label>Email</label>
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+                    </div>
+                    <div className="form-button-container">
+                        <button type="submit" disabled={isUpdating}>
+                            {isCreatingUser ? 'Create User' : 'Save Changes'}
+                        </button>
+                        <button type="button" onClick={onClose} disabled={isUpdating}>
+                            Cancel
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
