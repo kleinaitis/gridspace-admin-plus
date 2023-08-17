@@ -14,6 +14,9 @@ function App() {
     const [userToUpdate, setUserToUpdate] = useState(null);
     const [uniqueRoles, setUniqueRoles] = useState([]);
     const [orgNodes, setOrgNodes] = useState([]);
+    const [updateUserErrorMessage, setUpdateUserErrorMessage] = useState('');
+    const [isNewUserModalOpen, setNewUserModalOpen] = useState(false);
+
 
     useEffect(() => {
         async function getUsersAndRoles() {
@@ -69,6 +72,8 @@ function App() {
         };
         setUserToUpdate(newUser);
         setModalOpen(true);
+        setNewUserModalOpen(true);
+
     };
 
     const handleUserSelect = (userId) => {
@@ -91,10 +96,15 @@ function App() {
     };
 
     const onUpdateUser = async () => {
-        if (selectedUser) {
+        if (!selectedUser) {
+            setUpdateUserErrorMessage('Please select a user before updating.');
+            return;
+        } else {
+            setUpdateUserErrorMessage('');
             const user = users[selectedUser];
             setUserToUpdate(user);
             setModalOpen(true);
+            setNewUserModalOpen(false);
         }
     };
 
@@ -169,9 +179,6 @@ function App() {
 
     return (
         <div className="App">
-            <div className="App-header">
-                <h1>User Management</h1>
-            </div>
             <div className="table-container">
                 <UserTable
                     users={Object.values(users)}
@@ -180,6 +187,7 @@ function App() {
                     onCreateUser={onCreateUser}
                     onUpdateUser={onUpdateUser}
                     exportToExcel={exportToExcel}
+                    updateUserErrorMessage={updateUserErrorMessage}
                 />
             </div>
             {isModalOpen && (
@@ -192,7 +200,7 @@ function App() {
                     onUserListRefresh={handleUserListRefresh}
                     availableOrgNodes={orgNodes}
                     credentials={credentials}
-                    isCreatingUser={!selectedUser}
+                    isCreatingUser={isNewUserModalOpen}
                 />
             )}
         </div>
