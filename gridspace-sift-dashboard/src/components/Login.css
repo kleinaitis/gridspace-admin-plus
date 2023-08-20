@@ -1,41 +1,134 @@
-.login-page input[type="text"],
-.login-page input[type="password"],
-.login-page button {
-    padding: 0;
-    margin-bottom: 0;
+.login-page {
+    font-family: Arial, sans-serif;
 }
 
-.login-page input[type="text"],
-.login-page input[type="password"] {
-    border: 1px solid #e0e0e0;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    font-size: 16px;
-    transition: all 0.3s ease-in-out;
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
-.login-page input[type="text"]:focus,
-.login-page input[type="password"]:focus {
-    border-color: #0079a6;
-    outline: none;
+.login-container {
+    animation: slide-in 0.5s ease;
 }
 
-.login-page button {
-    background: #0079a6;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 15px 10px;
+@keyframes slide-in {
+    from {
+        transform: translateX(-20%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
-.login-page button:hover {
-    background: #005f7a;
+.help-dialog-overlay {
+    animation: fade-in 0.3s ease;
 }
 
-.login-page.error-message {
-    color: #e74c3c;
-    margin-top: 10px;
-    font-weight: bold;
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.login-header {
     text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+}
+
+.login-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+.help-button-container {
+    text-align: right;
+}
+
+.help-button {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.help-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.help-dialog {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.close-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+    background-color: #0056b3;
+}
+
+.expand-button {
+    background: none;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: underline;
+    margin-top: 10px;
+    transition: color 0.2s ease-in-out;
+}
+
+.expand-button:hover {
+    color: #0079a6;
 }

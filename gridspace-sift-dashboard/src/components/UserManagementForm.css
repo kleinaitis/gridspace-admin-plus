@@ -16,8 +16,8 @@
     padding: 30px;
     border-radius: 10px;
     position: relative;
-    max-width: 500px;
-    width: 80%;
+    max-width: 300px;
+    width: 70%;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
@@ -43,22 +43,23 @@
     padding: 10px;
 }
 
-.label-container {
+label {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin-top: 20px;
 }
 
-.label-container label {
+label {
     font-weight: bold;
+    font-size: 12px;
     color: #333;
     margin-bottom: 5px;
 }
 
-.label-container select,
-.label-container input[type="text"],
-.label-container input[type="email"] {
+label select,
+label input[type="text"],
+label input[type="email"] {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -69,19 +70,15 @@
     transition: border-color 0.3s ease-in-out;
 }
 
-.label-container input[type="email"] {
-    width: 100%;
-}
-
-.label-container:hover select,
-.label-container:hover input[type="text"],
-.label-container:hover input[type="email"] {
+label:hover select,
+label:hover input[type="text"],
+label:hover input[type="email"] {
     border-color: #007bff;
 }
 
 .form-button-container {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 button[type="submit"],
@@ -109,9 +106,9 @@ button[type="button"]:hover {
     background-color: #1e90ff;
 }
 
-.label-container input[type="text"],
-.label-container input[type="email"] {
-    width: 94.9%;
+label input[type="text"],
+label input[type="email"] {
+    width: 91%;
 }
 
 .success-message,
