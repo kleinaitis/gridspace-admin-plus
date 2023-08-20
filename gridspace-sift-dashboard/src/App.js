@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {fetchAllUsers, fetchOrgNodes} from './services/fetch-data';
+import { fetchAllUsers, fetchOrgNodes } from './services/fetch-data';
 import UserTable from './components/UserTable';
 import UserManagementForm from './components/UserManagementForm';
-import Login from './components/Login';
 import * as XLSX from 'xlsx';
+import WelcomePage from './components/WelcomePage';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -16,7 +16,6 @@ function App() {
     const [orgNodes, setOrgNodes] = useState([]);
     const [updateUserErrorMessage, setUpdateUserErrorMessage] = useState('');
     const [isNewUserModalOpen, setNewUserModalOpen] = useState(false);
-
 
     useEffect(() => {
         async function getUsersAndRoles() {
@@ -52,16 +51,11 @@ function App() {
         }
     }, [credentials]);
 
-
     const handleLoginSuccess = (fetchedUsers, loginCredentials) => {
         setUsers(fetchedUsers);
         setCredentials(loginCredentials);
         setIsAuthenticated(true);
     };
-
-    if (!isAuthenticated) {
-        return <Login onLoginSuccess={handleLoginSuccess} />;
-    }
 
     const onCreateUser = () => {
         const newUser = {
@@ -73,7 +67,6 @@ function App() {
         setUserToUpdate(newUser);
         setModalOpen(true);
         setNewUserModalOpen(true);
-
     };
 
     const handleUserSelect = (userId) => {
@@ -179,16 +172,23 @@ function App() {
 
     return (
         <div className="App">
-            <div className="table-container">
-                <UserTable
-                    users={Object.values(users)}
-                    onUserSelect={handleUserSelect}
-                    selectedUserId={selectedUser}
-                    onCreateUser={onCreateUser}
-                    onUpdateUser={onUpdateUser}
-                    exportToExcel={exportToExcel}
-                    updateUserErrorMessage={updateUserErrorMessage}
-                />
+            <div className={`welcome-page ${isAuthenticated ? 'fade-out' : 'fade-in'}`}>
+                {!isAuthenticated && <WelcomePage onLoginSuccess={handleLoginSuccess} />}
+            </div>
+            <div className={`table-container ${isAuthenticated ? 'fade-in' : 'fade-out'}`}>
+                {isAuthenticated && (
+                    <div className="table-container-inner">
+                        <UserTable
+                            users={Object.values(users)}
+                            onUserSelect={handleUserSelect}
+                            selectedUserId={selectedUser}
+                            onCreateUser={onCreateUser}
+                            onUpdateUser={onUpdateUser}
+                            exportToExcel={exportToExcel}
+                            updateUserErrorMessage={updateUserErrorMessage}
+                        />
+                    </div>
+                )}
             </div>
             {isModalOpen && (
                 <UserManagementForm
@@ -206,5 +206,4 @@ function App() {
         </div>
     );
 }
-
 export default App;
