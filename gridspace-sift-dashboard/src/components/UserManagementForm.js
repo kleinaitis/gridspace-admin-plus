@@ -28,7 +28,7 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
     }, [user]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData(prevState => ({
             ...prevState,
             [name]: value
@@ -40,12 +40,12 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
 
         const selectedOrgNode = availableOrgNodes.find(node => node.id === formData.orgNode);
         const apiData = {
-            org_node: { id: selectedOrgNode.id, name: selectedOrgNode.name },
+            org_node: {id: selectedOrgNode.id, name: selectedOrgNode.name},
             role: formData.role,
             // Conditionally set name or first_name/last_name based on user type
             ...(isCreatingUser
-                    ? { name: formData.name, email: formData.email }
-                    : { first_name: formData.firstName, last_name: formData.lastName }
+                    ? {name: formData.name, email: formData.email}
+                    : {first_name: formData.firstName, last_name: formData.lastName}
             )
         };
 
@@ -136,11 +136,11 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
                 </label>
                 <label>
                     Name
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} required/>
                 </label>
                 <label>
                     Email
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+                    <input type="email" name="email" value={formData.email} onChange={handleChange} required/>
                 </label>
             </>
         )
@@ -168,11 +168,11 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
                 </label>
                 <label>
                     First Name
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
+                    <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required/>
                 </label>
                 <label>
                     Last Name
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
+                    <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required/>
                 </label>
             </>
         );
@@ -187,32 +187,7 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
                     <h2>{isCreatingUser ? 'Create User' : 'Update User'}</h2>
                 </div>
                 <form onSubmit={handleUpdate}>
-                    <div className="label-container">
-                        <label>Org Node</label>
-                        <select name="orgNode" value={formData.orgNode} onChange={handleChange} required>
-                            {availableOrgNodes.map(node => (
-                                <option key={node.id} value={node.id}>
-                                    {node.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="label-container">
-                        <label>Role</label>
-                        <select name="role" value={formData.role} onChange={handleChange} required>
-                            {roles.map(role => (
-                                <option key={role} value={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="label-container">
-                        <label>Name</label>
-                        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-                    </div>
-                    <div className="label-container">
-                        <label>Email</label>
-                        <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-                    </div>
+                    {formFields}
                     <div className="form-button-container">
                         <button type="submit" disabled={isUpdating}>
                             {isCreatingUser ? 'Create User' : 'Save Changes'}
@@ -227,4 +202,4 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
     );
 }
 
-export default UserManagementForm;
+    export default UserManagementForm;
