@@ -70,7 +70,7 @@ function UserTable({ users, onUserSelect, onCreateUser, onUpdateUser, exportToEx
         <div className="user-table-container">
             <div ref={tableRef} className="table-wrapper">
             <div className="table-header">
-                <h2>User Management</h2>
+                <h2>Gridspace Admin+ User Management Portal</h2>
             </div>
             <div className="top-row-container">
                 <div className="search-bar-container">
