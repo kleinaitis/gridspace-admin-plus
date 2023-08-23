@@ -67,90 +67,92 @@ function UserTable({ users, onUserSelect, onCreateUser, onUpdateUser, exportToEx
     };
 
     return (
-        <div className="user-table-container">
-            <div ref={tableRef} className="table-wrapper">
-            <div className="table-header">
-                <h2>Gridspace Admin+ User Management Portal</h2>
-            </div>
-            <div className="top-row-container">
-                <div className="search-bar-container">
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        className="search-bar"
-                        value={searchQuery}
-                        onChange={onSearchChange}
-                    />
+        <div className="table-user-table-container">
+            <div ref={tableRef} className="table-table-wrapper">
+                <div className="table-table-header">
+                    <h2>Gridspace Admin+ User Management Portal</h2>
                 </div>
-                <div className="button-container">
-                    <button className="icon-button" onClick={onCreateUser}>
-                        <i className="fas fa-user-plus"></i>
-                        <span className="button-text">Add New User</span>
-                    </button>
-                    <button
-                        className={`icon-button ${updateUserErrorMessage || displayErrorMessage ? 'error' : ''}`}
-                        onClick={handleUpdateUser}
-                        data-error-message="Please select a user before updating."
-                    >
-                        <i className="fas fa-pencil-alt"></i>
-                        <span className="button-text">Update User</span>
-                    </button>
-                    <button className="icon-button" onClick={exportToExcel}>
-                        <i className="fas fa-file-excel"></i>
-                        <span className="button-text">Export to Excel</span>
-                    </button>
-                </div>
-                <div className="users-pagination-container">
-                    <div className="view-box">
-                        <select className="users-per-page-select" onChange={onUsersPerPageChange} value={usersPerPage}>
-                            <option value="10"> View 10 </option>
-                            <option value="25">View 25</option>
-                            <option value="50">View 50</option>
-                        </select>
-                        <div className="pagination-label-container">
-                            <div className="pagination-label">
-                                {`${firstIndex + 1}-${Math.min(lastIndex, filteredUsers.length)} of ${users.length}`}
-                            </div>
-                        </div>
+                <div className="table-top-row-container">
+                    <div className="table-search-bar-container">
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="table-search-bar"
+                            value={searchQuery}
+                            onChange={onSearchChange}
+                        />
                     </div>
-                    <div className="pagination-buttons">
-                        <button className="page-icon-button" onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
-                            <i className="fas fa-chevron-left"></i>
+                    <div className="table-button-container">
+                        <button className="table-icon-button" onClick={onCreateUser}>
+                            <i className="fas fa-user-plus"></i>
+                            <span className="table-button-text">Add New User</span>
                         </button>
                         <button
-                            className="page-icon-button"
-                            onClick={() => onPageChange(currentPage + 1)}
-                            disabled={currentPage * usersPerPage >= users.length}
+                            className={`table-icon-button ${( updateUserErrorMessage || displayErrorMessage) ? 'error' : ''}`}
+                            onClick={handleUpdateUser}
+                            data-error-message="Please select a user before updating."
                         >
-                            <i className="fas fa-chevron-right"></i>
+                            <i className="fas fa-pencil-alt"></i>
+                            <span className="table-button-text">Update User</span>
+                        </button>
+                        <button className="table-icon-button" onClick={exportToExcel}>
+                            <i className="fas fa-file-excel"></i>
+                            <span className="table-button-text">Export to Excel</span>
                         </button>
                     </div>
+                    <div className="table-users-pagination-container">
+                        <div className="table-view-box">
+                            <select className="table-users-per-page-select" onChange={onUsersPerPageChange}
+                                    value={usersPerPage}>
+                                <option value="10"> View 10</option>
+                                <option value="25">View 25</option>
+                                <option value="50">View 50</option>
+                            </select>
+                            <div className="table-pagination-label-container">
+                                <div className="table-pagination-label">
+                                    {`${firstIndex + 1}-${Math.min(lastIndex, filteredUsers.length)} of ${users.length}`}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="table-pagination-buttons">
+                            <button className="table-page-icon-button" onClick={() => onPageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}>
+                                <i className="fas fa-chevron-left"></i>
+                            </button>
+                            <button
+                                className="table-page-icon-button"
+                                onClick={() => onPageChange(currentPage + 1)}
+                                disabled={currentPage * usersPerPage >= users.length}
+                            >
+                                <i className="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+                <table className="table-user-table">
+                    <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Last Login</th>
+                        <th>Org Node</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {currentUsers.map(user => (
+                        <UserRow
+                            key={user.userId}
+                            user={user}
+                            onRowClick={handleRowClick}
+                            isSelected={user === selectedUser}
+                        />
+                    ))}
+                    </tbody>
+                </table>
             </div>
-            <table className="user-table">
-                <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Last Login</th>
-                    <th>Org Node</th>
-                </tr>
-                </thead>
-                <tbody>
-                {currentUsers.map(user => (
-                    <UserRow
-                        key={user.userId}
-                        user={user}
-                        onRowClick={handleRowClick}
-                        isSelected={user === selectedUser}
-                    />
-                ))}
-                </tbody>
-            </table>
-        </div>
         </div>
     );
 }

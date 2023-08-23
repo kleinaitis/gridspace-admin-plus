@@ -30,7 +30,7 @@ function UserRow({ user, onRowClick, isSelected }) {
         marginRight: '5px',
     };
 
-    const rowClassName = isSelected ? 'selected-row' : '';
+    const rowClassName = isSelected ? 'table-selected-row' : '';
 
     return (
         <tr onClick={() => onRowClick(user)} className={rowClassName}>
