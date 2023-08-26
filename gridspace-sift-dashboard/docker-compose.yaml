@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend_container
+    ports:
+      - '3000:3000'
+    networks:
+      - gridspace-sift-dashboard_default
+    stdin_open: true
+    tty: true
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile-backend
+    container_name: backend_container
+    ports:
+      - '3001:3001'
+    networks:
+      - gridspace-sift-dashboard_default
+networks:
+  gridspace-sift-dashboard_default:
+    external: true
+
