@@ -41,11 +41,19 @@ function UserTable({ users, onUserSelect, onCreateUser, onUpdateUser, exportToEx
 
     const handleUpdateUser = () => {
         if (!selectedUser) {
-            setDisplayErrorMessage(true); // Show error message when the button is clicked without a selected user
+            setDisplayErrorMessage(true);
+
+            // Clear the error message after 5 seconds
+            setTimeout(() => {
+                setDisplayErrorMessage(false);
+            }, 5000);
+
             return;
         }
+
         onUpdateUser();
     };
+
 
     const handleRowClick = (user) => {
         setSelectedUser(user);
