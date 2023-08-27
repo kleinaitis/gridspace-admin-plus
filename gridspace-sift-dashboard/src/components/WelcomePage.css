@@ -2,19 +2,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.welcome-page.animate {
     opacity: 1;
-    transform: translateY(0);
-}
-
-body {
-    color: #333;
-    font-family: Arial, sans-serif;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    font-family: 'Arial', sans-serif;
 }
 
 .header {
@@ -22,13 +12,15 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
 }
 
 .logo {
     font-size: 28px;
     color: #fff;
     text-decoration: none;
+    font-weight: bold;
 }
 
 .welcome-section {
@@ -39,6 +31,7 @@ body {
     align-items: center;
     background-color: #007bff;
     color: #fff;
+    padding: 60px 0;
 }
 
 .welcome-content {
@@ -46,6 +39,7 @@ body {
     text-align: center;
     z-index: 1;
 }
+
 .welcome-title {
     font-size: 48px;
     margin-bottom: 20px;
@@ -71,7 +65,7 @@ body {
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
@@ -101,9 +95,9 @@ body {
 
 .divider {
     width: 100%;
-    height: 4px;
-    margin: 20px 0;
-    background-color: #007bff;
+    text-align:center;
+    padding:30px 0;
+    box-shadow: 0 1em 1em -1em rgba(0, 0, 0, .25);
 }
 
 .features-section,
@@ -127,7 +121,7 @@ body {
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     text-align: center;
 }
@@ -168,7 +162,7 @@ body {
     padding: 30px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     text-align: center;
     flex: 1;

@@ -16,9 +16,11 @@ import {
 
 function WelcomePage(props) {
     const [showLogin, setShowLogin] = useState(false);
+    const [error, setError] = useState('');
 
     const handleGetStarted = () => {
         setShowLogin(true);
+        setError('')
     };
 
     return  (
@@ -26,7 +28,14 @@ function WelcomePage(props) {
             <section className="welcome-section">
                 {showLogin ? (
                     <div className="login-section">
-                        <Login onLoginSuccess={props.onLoginSuccess} handleBack={() => setShowLogin(false)} />
+                        <Login
+                            onLoginSuccess={props.onLoginSuccess}
+                            handleBack={() => setShowLogin(false)}
+                        />
+                    </div>
+                ) : error ? (
+                    <div className="error-message">
+                        {error}
                     </div>
                 ) : (
                     <div className="welcome-content">
