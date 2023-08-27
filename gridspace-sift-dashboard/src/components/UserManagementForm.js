@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './UserManagementForm.css';
 import { createUser, updateUser } from '../services/send-data';
 
-function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, availableOrgNodes, credentials, isCreatingUser }) {
+function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, availableOrgNodes, credentials, isCreatingUser, users }) {
     const [formData, setFormData] = useState({
         orgNode: user?.orgNode?.id || '',
         role: user.role || '',
@@ -38,6 +38,17 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
     const handleUpdate = async (e) => {
         e.preventDefault();
 
+        if (isCreatingUser) {
+            const userWithEmailExists = Object.values(users).some(
+                (existingUser) => existingUser.email === formData.email
+            );
+
+            if (userWithEmailExists) {
+                setErrorMessage('A user with the same email already exists.');
+                return;
+            }
+        }
+
         const selectedOrgNode = availableOrgNodes.find(node => node.id === formData.orgNode);
         const apiData = {
             org_node: {id: selectedOrgNode.id, name: selectedOrgNode.name},
@@ -52,6 +63,7 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
         if (!isCreatingUser) {
             apiData.userId = user.userId;
         }
+
 
         const userChanges = [];
 
@@ -80,7 +92,7 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
                     onUpdateSuccess(true); // Pass true to indicate creating a new user
                     setSuccessMessage('User created successfully!');
                 } else {
-                    await updateUser(apiData, credentials);
+                    await updateUser(apiData, credentials)
                     onUpdateSuccess(false); // Pass false to indicate updating an existing user
                     setSuccessMessage('User updated successfully!');
                 }

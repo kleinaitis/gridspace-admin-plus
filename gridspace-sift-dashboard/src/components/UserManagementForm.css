@@ -12,13 +12,13 @@
 }
 
 .modal-content {
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
     position: relative;
-    max-width: 300px;
-    width: 70%;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 80%;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     text-align: center;
 }
 
@@ -108,19 +108,24 @@ button[type="button"]:hover {
 
 label input[type="text"],
 label input[type="email"] {
-    width: 91%;
+    width: 94%;
 }
 
 .success-message,
 .loading-indicator {
     font-size: 14px;
     color: #333;
-    margin-top: 10px;
-    padding: 5px 0;
+    padding: 2px 0;
 }
 
 h2 {
     font-size: 28px;
     margin: 0;
     padding: 10px;
+}
+
+.error-message {
+    font-size: 14px;
+    color: #e74c3c;
+    padding: 2px 0;
 }
