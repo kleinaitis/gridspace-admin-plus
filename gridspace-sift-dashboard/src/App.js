@@ -162,8 +162,7 @@ function App() {
                 ]);
                 XLSX.utils.book_append_sheet(workbook, ws, 'Users');
 
-                // Save the file
-                XLSX.writeFile(workbook, 'user_data.xlsx');
+                XLSX.writeFile(workbook, 'gridspace_user_data.xlsx');
             } catch (error) {
                 console.error('Error exporting to Excel:', error);
             }
@@ -201,6 +200,7 @@ function App() {
                     availableOrgNodes={orgNodes}
                     credentials={credentials}
                     isCreatingUser={isNewUserModalOpen}
+                    users={users}
                 />
             )}
         </div>
