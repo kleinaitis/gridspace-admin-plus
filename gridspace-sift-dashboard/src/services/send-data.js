@@ -1,8 +1,10 @@
-export async function updateUser(apiData, credentials) {
-    const url = `/v0/users/${apiData.userId}`;
+import fetch from 'node-fetch';
+
+export async function updateUser(apiData, authorizationToken) {
+    const url = `http://localhost:3001/proxy/users/${apiData.userId}`;
 
     const body = {
-        org_node: apiData.orgNode,
+        org_node: apiData.org_node.id,
         role: apiData.role,
         first_name: apiData.first_name,
         last_name: apiData.last_name,
@@ -12,8 +14,7 @@ export async function updateUser(apiData, credentials) {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'Authorization': `Basic ${credentials}`,
+            'Authorization': 'Basic ' + authorizationToken,
         },
         body: JSON.stringify(body),
     };
@@ -22,22 +23,25 @@ export async function updateUser(apiData, credentials) {
         const response = await fetch(url, options);
 
         if (!response.ok) {
-            const errorDetail = await response.json();
+            if (response.status === 404) {
+                console.error("User not found");
+                throw new Error('User not found');
+            }
+
+            const errorDetail = await response.text();
             console.error("Error details:", errorDetail);
             throw new Error('Failed to update user');
         }
 
-        const data = await response.json();
-        console.log(data);
-        return data;
+        return response.json();
     } catch (error) {
         console.error(error);
         throw error;
     }
 }
 
-export async function createUser(apiData, credentials) {
-    const url = `/v0/users/batch-create`;
+export async function createUser(apiData, authorizationToken) {
+    const url = 'http://localhost:3001/proxy/users/batch-create';
 
     const body = {
         send_activation_emails: true,
@@ -56,8 +60,8 @@ export async function createUser(apiData, credentials) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + authorizationToken,
             Accept: 'application/json',
-            Authorization: `Basic ${credentials}`,
         },
         body: JSON.stringify(body),
     };
