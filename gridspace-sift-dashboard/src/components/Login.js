@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { fetchAllUsers } from '../services/fetch-data';
 import './Login.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 
 function Login(props) {
     const [accountId, setAccountId] = useState('');
@@ -14,18 +12,22 @@ function Login(props) {
         const credentials = window.btoa(accountId + ":" + secretKey);
 
         try {
-            const users = await fetchAllUsers(credentials);
-            if (users.error) {
-                setError('Login failed!');
-                setTimeout(() => setError(''), 5000); // Clear the error after 5 seconds
+            const response = await fetchAllUsers(credentials);
+
+            if (response.length > 0) { // Check if the response contains users
+                props.onLoginSuccess(response, credentials); // Successful login
             } else {
-                props.onLoginSuccess(users, credentials);
+                setError('Login failed! Please check your credentials.');
+                setTimeout(() => setError(''), 5000);
             }
         } catch (error) {
             console.error("Login error:", error);
             setError('An error occurred while logging in.');
+            setAccountId('');
+            setSecretKey('');
         }
     };
+
 
 
     const openHelpDialog = () => {
@@ -82,9 +84,9 @@ function Login(props) {
                         <h2>Need Help?</h2>
                         <p>To find your Account ID and Secret Key:</p>
                         <ol>
-                            <li>Visit <a href="https://api.gridspace.com/account" target="_blank" rel="noopener noreferrer">https://api.gridspace.com/account</a></li>
-                            <li>Log in to your Gridspace account</li>
-                            <li>Locate your Account ID and Secret Key on the page</li>
+                            <li>Open your web browser and visit <a href="https://api.gridspace.com/account" target="_blank" rel="noopener noreferrer">https://api.gridspace.com/account</a></li>
+                            <li>Login using your Gridspace credentials.</li>
+                            <li>Once logged in, your Account ID and Secret Key are displayed on the page</li>
                         </ol>
                         <button className="close-button" onClick={closeHelpDialog}>Close</button>
                     </div>
