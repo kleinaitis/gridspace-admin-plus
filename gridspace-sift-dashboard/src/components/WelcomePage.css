@@ -241,3 +241,91 @@
 .footer p {
     margin: 0;
 }
+
+@media screen and (max-width: 768px) {
+    .logo {
+        font-size: 24px;
+    }
+
+    .welcome-title {
+        font-size: 36px;
+    }
+
+    .welcome-section, .about-me-section, .login-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 15px;
+    }
+
+    .login-section {
+        position: relative;
+    }
+
+    .welcome-description {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .cta-button {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .header {
+        padding: 10px 15px;
+    }
+
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .welcome-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .welcome-section {
+        min-height: unset;
+        height: 100vh;
+        padding: 5px;
+    }
+
+    .welcome-content, .about-me-content {
+        max-width: 90%;
+    }
+
+    .welcome-title {
+        margin-bottom: 15px;
+    }
+
+    .welcome-description {
+        margin-bottom: 20px;
+    }
+
+    .features-list {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        justify-content: center;
+        padding: 10px;
+        margin: 15px;
+    }
+
+    .how-it-works-steps {
+        display: grid;
+        padding: 10px;
+        margin: 15px;
+
+    }
+
+    .step {
+        padding: 10%;
+    }
+
+    .footer {
+        width: 100%;
+    }
+
+}
