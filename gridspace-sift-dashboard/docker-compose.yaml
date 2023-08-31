@@ -6,11 +6,9 @@ services:
       dockerfile: Dockerfile
     container_name: frontend_container
     ports:
-      - '3000:3000'
-    networks:
-      - gridspace-sift-dashboard_default
-    stdin_open: true
-    tty: true
+      - '80:3000'
+    image: kleinaitis/gridspace-sift-dashboard-frontend:latest
+
   backend:
     build:
       context: .
@@ -18,9 +16,4 @@ services:
     container_name: backend_container
     ports:
       - '3001:3001'
-    networks:
-      - gridspace-sift-dashboard_default
-networks:
-  gridspace-sift-dashboard_default:
-    external: true
-
+    image: kleinaitis/gridspace-sift-dashboard-backend:latest
