@@ -1,16 +1,20 @@
-FROM node:18-alpine
+
+FROM node:18-alpine as build-stage
 
 WORKDIR /app
 
 COPY package*.json ./
-COPY src ./src
-COPY public ./public
-COPY backend/server.js .
-
 RUN npm install
 
-COPY . .
+COPY src ./src
+COPY public ./public
 
-EXPOSE 3000
+RUN npm run build
 
-CMD ["npm", "start"]
+FROM nginx:alpine
+
+COPY --from=build-stage /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
