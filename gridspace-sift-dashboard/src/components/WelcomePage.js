@@ -117,7 +117,7 @@ function WelcomePage(props) {
                         Hi there! I'm Jeff Kleinaitis, a recent Computer Science graduate who is passionate about solving real-world problems through software solutions. Gridspace Admin+ was created to address a practical issue I encountered at work: the lack of a user export function on the native Gridspace site. As a perpetual learner, I'm continually exploring opportunities to refine my skills and streamline my approaches. If you have insights on enhancing Gridspace Admin+, I'd greatly appreciate your input. Your thoughts could make a valuable difference in shaping its future.
                     </p>
                     <p className="get-in-touch-message">Get in Touch:</p>
-                        <div className="contact-icons">
+                    <div className="contact-icons">
                         <a href="https://github.com/kleinaitis" target="_blank" rel="noopener noreferrer">
                             <FontAwesomeIcon icon={faGithub} className="icon" />
                         </a>
