@@ -20,6 +20,7 @@ app.get('/proxy/users', async (req, res) => {
             headers: {
                 'Authorization': req.header('Authorization'),
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             },
         });
 
