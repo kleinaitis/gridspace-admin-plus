@@ -1,0 +1,67 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Image version'
+        required: true
+
+env:
+  REGISTRY: "registry.digitalocean.com/kleinaitis"
+  IMAGE_NAMES: "nginx,kleinaitis/gridspace-sift-dashboard-frontend:latest,kleinaitis/gridspace-sift-dashboard-backend:latest"
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image_name: ${{ split(env.IMAGE_NAMES, ',') }}
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Build container image
+        run: docker build -t $(echo $REGISTRY)/${{ matrix.image_name }}:$(echo $GITHUB_SHA | head -c7) -f Dockerfile-${{ matrix.image_name }} .
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Remove old images
+        run: if [ ! -z "$(doctl registry repository list | grep "$(echo $REGISTRY)/${{ matrix.image_name }}")" ]; then doctl registry repository delete-manifest ${{ matrix.image_name }} $(doctl registry repository list-tags ${{ matrix.image_name }} | grep -o "sha.*") --force; else echo "No repository"; fi
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push $(echo $REGISTRY)/${{ matrix.image_name }}:$(echo $GITHUB_SHA | head -c7)
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+    steps:
+      - name: Deploy to Digital Ocean droplet via SSH action
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          envs: IMAGE_NAME,REGISTRY,${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA
+          script: |
+            # Login to registry
+            docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
+            # Stop running container
+            docker stop ${{ matrix.image_name }}
+            # Remove old container
+            docker rm ${{ matrix.image_name }}
+            # Run a new container from a new image
+            docker run -d \
+            --restart always \
+            --name ${{ matrix.image_name }} \
+            $(echo $REGISTRY)/${{ matrix.image_name }}:$(echo $GITHUB_SHA | head -c7)
