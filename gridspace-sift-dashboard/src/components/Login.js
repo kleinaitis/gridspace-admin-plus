@@ -8,14 +8,18 @@ function Login(props) {
     const [error, setError] = useState('');
     const [helpDialogOpen, setHelpDialogOpen] = useState(false);
 
+    const getUsers = async (credentials) => {
+        return await fetchAllUsers(credentials);
+    };
+
     const handleLogin = async () => {
         const credentials = window.btoa(accountId + ":" + secretKey);
 
         try {
-            const response = await fetchAllUsers(credentials);
+            const users = await getUsers(credentials);
 
-            if (response.length > 0) { // Check if the response contains users
-                props.onLoginSuccess(response, credentials); // Successful login
+            if (users.length > 0) { // Check if the response contains users
+                props.onLoginSuccess(users, credentials); // Successful login
             } else {
                 setError('Login failed! Please check your credentials.');
                 setTimeout(() => setError(''), 5000);
@@ -27,8 +31,6 @@ function Login(props) {
             setSecretKey('');
         }
     };
-
-
 
     const openHelpDialog = () => {
         setHelpDialogOpen(true);

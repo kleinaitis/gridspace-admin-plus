@@ -16,45 +16,39 @@ function App() {
     const [orgNodes, setOrgNodes] = useState([]);
     const [updateUserErrorMessage, setUpdateUserErrorMessage] = useState('');
     const [isNewUserModalOpen, setNewUserModalOpen] = useState(false);
+    async function updateUsersStateById() {
+        if (users.length > 0) {
+            const usersById = users.reduce((acc, user) => {
+                acc[user.userId] = user;
+                return acc;
+            }, {});
+            setUsers(usersById);
+        }
+    }
+
+    const getOrgNodes = async () => {
+        try {
+            const nodes = await fetchOrgNodes(credentials);
+            setOrgNodes(nodes);
+        } catch (error) {
+            console.error("Error fetching org nodes:", error);
+        }
+    };
 
     useEffect(() => {
-        async function getUsersAndRoles() {
-            if (credentials) {
-                try {
-                    const fetchedUsers = await fetchAllUsers(credentials);
-                    const usersById = fetchedUsers.reduce((acc, user) => {
-                        acc[user.userId] = user;
-                        return acc;
-                    }, {});
-                    setUsers(usersById);
-
-                    const allRoles = [...new Set(Object.values(usersById).map(user => user.role))];
-                    setUniqueRoles(allRoles);
-                } catch (error) {
-                    console.error("Error fetching users:", error);
-                }
-            }
-        }
-
-        const getOrgNodes = async () => {
-            try {
-                const nodes = await fetchOrgNodes(credentials);
-                setOrgNodes(nodes);
-            } catch (error) {
-                console.error("Error fetching org nodes:", error);
-            }
-        };
-
-        if (credentials) {
-            getUsersAndRoles();
+        if (users.length > 0 && credentials) {
+            updateUsersStateById();
             getOrgNodes();
         }
-    }, [credentials]);
+    }, [users, credentials]);
 
     const handleLoginSuccess = (fetchedUsers, loginCredentials) => {
         setUsers(fetchedUsers);
         setCredentials(loginCredentials);
         setIsAuthenticated(true);
+
+        const allRoles = [...new Set(fetchedUsers.map(user => user.role))];
+        setUniqueRoles(allRoles);
     };
 
     const onCreateUser = () => {
@@ -91,7 +85,6 @@ function App() {
     const onUpdateUser = async () => {
         if (!selectedUser) {
             setUpdateUserErrorMessage('Please select a user before updating.');
-            return;
         } else {
             setUpdateUserErrorMessage('');
             const user = users[selectedUser];
