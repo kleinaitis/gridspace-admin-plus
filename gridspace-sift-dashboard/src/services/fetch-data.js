@@ -1,7 +1,7 @@
-import fetch from 'node-fetch';
 import User from '../models/UserClass';
+
 export async function fetchAllUsers(credentials) {
-    let url = 'http://localhost:3001/proxy/users';
+    let url = '/proxy/users';
     let users = [];
 
     while (url) {
@@ -15,7 +15,7 @@ export async function fetchAllUsers(credentials) {
         if (data.next) {
             // Construct the URL for the next page using the proxy route
             const nextPageUrl = new URL(data.next);
-            const proxyUrl = new URL('http://localhost:3001/proxy/users');
+            const proxyUrl = new URL(`/proxy/users`, document.location);
             proxyUrl.search = nextPageUrl.search;
 
             url = proxyUrl.toString();
@@ -23,7 +23,6 @@ export async function fetchAllUsers(credentials) {
             url = null;  // If no next URL, set url to null to break the loop
         }
     }
-
     return users;
 }
 
@@ -49,7 +48,7 @@ async function fetchUsersFromURL(url, credentials) {
 }
 
 export async function fetchOrgNodes(credentials) {
-    const url = 'http://localhost:3001/proxy/org/nodes';
+    const url = '/proxy/org/nodes';
     try {
         const response = await fetch(url, {
             method: 'GET',
