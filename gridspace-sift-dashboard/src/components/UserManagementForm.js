@@ -27,6 +27,14 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
         }
     }, [user]);
 
+    useEffect(() => {
+        document.body.classList.add('modal-open');
+
+        return () => {
+            document.body.classList.remove('modal-open');
+        };
+    }, []);
+
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData(prevState => ({
@@ -126,9 +134,10 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
     const formFields = isCreatingUser
         ? (
             <>
-                <label>
+                <label className="form-label">
                     Org Node
-                    <select name="orgNode" value={formData.orgNode} onChange={handleChange} required>
+                    <select className="form-input" name="orgNode" value={formData.orgNode || ''} onChange={handleChange}
+                            required>
                         <option value="">Select Org Node</option>
                         {availableOrgNodes.map(node => (
                             <option key={node.id} value={node.id}>
@@ -137,30 +146,34 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
                         ))}
                     </select>
                 </label>
-                <label>
+                <label className="form-label">
                     Role
-                    <select name="role" value={formData.role} onChange={handleChange} required>
+                    <select className="form-input" name="role" value={formData.role || ''} onChange={handleChange}
+                            required>
                         <option value="">Select Role</option>
                         {roles.map(role => (
                             <option key={role} value={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</option>
                         ))}
                     </select>
                 </label>
-                <label>
+                <label className="form-label">
                     Name
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} required/>
+                    <input className="form-input" type="text" name="name" value={formData.name || ''}
+                           onChange={handleChange} required/>
                 </label>
-                <label>
+                <label className="form-label">
                     Email
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required/>
+                    <input className="form-input" type="email" name="email" value={formData.email || ''}
+                           onChange={handleChange} required/>
                 </label>
             </>
         )
         : (
             <>
-                <label>
+                <label className="form-label">
                     Org Node
-                    <select name="orgNode" value={formData.orgNode} onChange={handleChange} required>
+                    <select className="form-input" name="orgNode" value={formData.orgNode || ''} onChange={handleChange}
+                            required>
                         <option value="">Select Org Node</option>
                         {availableOrgNodes.map(node => (
                             <option key={node.id} value={node.id}>
@@ -169,22 +182,25 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
                         ))}
                     </select>
                 </label>
-                <label>
+                <label className="form-label">
                     Role
-                    <select name="role" value={formData.role} onChange={handleChange} required>
+                    <select className="form-input" name="role" value={formData.role || ''} onChange={handleChange}
+                            required>
                         <option value="">Select Role</option>
                         {roles.map(role => (
                             <option key={role} value={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</option>
                         ))}
                     </select>
                 </label>
-                <label>
+                <label className="form-label">
                     First Name
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required/>
+                    <input className="form-input" type="text" name="firstName" value={formData.firstName || ''}
+                           onChange={handleChange} required/>
                 </label>
-                <label>
+                <label className="form-label">
                     Last Name
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required/>
+                    <input className="form-input" type="text" name="lastName" value={formData.lastName || ''}
+                           onChange={handleChange} required/>
                 </label>
             </>
         );
@@ -201,10 +217,10 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
                 <form onSubmit={handleUpdate}>
                     {formFields}
                     <div className="form-button-container">
-                        <button type="submit" disabled={isUpdating}>
+                        <button className="form-button" type="submit" disabled={isUpdating}>
                             {isCreatingUser ? 'Create User' : 'Save Changes'}
                         </button>
-                        <button type="button" onClick={onClose} disabled={isUpdating}>
+                        <button className="form-button" type="button" onClick={onClose} disabled={isUpdating}>
                             Cancel
                         </button>
                     </div>
@@ -214,4 +230,4 @@ function UserManagementForm({ isOpen, onClose, user, onUpdateSuccess, roles, ava
     );
 }
 
-    export default UserManagementForm;
+export default UserManagementForm;
