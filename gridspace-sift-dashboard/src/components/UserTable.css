@@ -275,3 +275,124 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: opacity 0.2s, visibility 0.2s;
 }
+
+@media (max-width: 768px) {
+
+    .table-table-header h1 {
+        font-size: 20px;
+        padding: 8px;
+    }
+
+    .table-user-table th:nth-child(1),
+    .table-user-table td:nth-child(1),
+    .table-user-table th:nth-child(2),
+    .table-user-table td:nth-child(2) {
+        width: 25%;
+    }
+
+    .table-user-table th:nth-child(3),
+    .table-user-table td:nth-child(3) {
+        width: 50%;
+    }
+
+    .table-user-table th:nth-child(4),
+    .table-user-table td:nth-child(4),
+    .table-user-table th:nth-child(5),
+    .table-user-table td:nth-child(5),
+    .table-user-table th:nth-child(6),
+    .table-user-table td:nth-child(6),
+    .table-user-table th:nth-child(7),
+    .table-user-table td:nth-child(7) {
+        display: none;
+    }
+
+    .table-user-table tbody tr {
+        height: 36px;
+    }
+
+    .table-user-table-container {
+        margin: 0;
+        width: 100%;
+        overflow: hidden;
+        box-shadow: none;
+        padding: 0;
+        overflow-x: auto;
+    }
+
+    .table-user-table {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 20%;
+    }
+
+    .table-table-header h1 {
+        font-size: 24px;
+        padding: 10px 0;
+    }
+
+    .table-user-table th,
+    .table-user-table td {
+        white-space: normal;
+    }
+
+    .table-table-header {
+        padding: 10px 0;
+    }
+
+    .table-table-header h1 {
+        font-size: 24px;
+        padding: 8px;
+    }
+
+    .table-user-table th,
+    .table-user-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .table-search-bar-container, .table-search-bar {
+        padding: 4px 10px;
+        justify-content: center;
+    }
+
+    .table-page-icon-button {
+        font-size: 14px;
+        padding: 4px;
+    }
+
+    .table-users-per-page-select {
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+
+    .table-pagination-label-container {
+        font-size: 10px;
+    }
+
+    .table-icon-button {
+        font-size: 10px;
+        padding: 4px 6px;
+    }
+
+    .table-search-bar,
+    .table-icon-button {
+        font-size: 10px;
+    }
+
+    .table-button-text {
+        margin-left: 2px;
+    }
+
+    .table-button-container {
+        align-items: center;
+        justify-content: center;
+        gap: 5%;
+        margin: 2%;
+    }
+
+    .table-top-row-container {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20%;
+    }
+}
