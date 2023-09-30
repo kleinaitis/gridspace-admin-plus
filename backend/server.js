@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 app.use(cors());
 router.use(bodyParser.json());
 
-app.get('/proxy/users', async (req, res) => {
+app.get('/users/list', async (req, res) => {
     try {
         const page = req.query.page || 1;
         const apiUrl = `https://api.gridspace.com/v0/users?page=${page}`;
@@ -33,7 +33,7 @@ app.get('/proxy/users', async (req, res) => {
     }
 });
 
-app.get('/proxy/org/nodes', async (req, res) => {
+app.get('/org/nodes', async (req, res) => {
     try {
         const response = await fetch('https://api.gridspace.com/v0/org/tiers/teams', {
             method: 'GET',
@@ -99,4 +99,4 @@ app.listen(PORT, () => {
     console.log(`Backend server is running on port ${PORT}`);
 });
 
-app.use('/proxy', router);
+app.use('/', router);

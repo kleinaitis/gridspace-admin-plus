@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 export async function updateUser(apiData, authorizationToken) {
-    const url = `/proxy/users/${apiData.userId}`;
+    const url = `/users/${apiData.userId}`;
 
     const body = {
         org_node: apiData.org_node.id,
@@ -40,7 +40,7 @@ export async function updateUser(apiData, authorizationToken) {
 }
 
 export async function createUser(apiData, authorizationToken) {
-    const url = '/proxy/users/batch-create';
+    const url = '/users/batch-create';
 
     const body = {
         send_activation_emails: true,
